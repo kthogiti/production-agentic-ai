@@ -21,3 +21,24 @@ class DeveloperResponse(BaseModel):
         default_factory=list,
         description="Any assumptions made by the developer."
     )
+
+class ArchitecureDecision(BaseModel):
+    summary: str = Field(
+        description="high-level architecture approach."
+    )
+    constraints: list[str] = Field(
+        description="Technical constraints that developer must follow."
+    )
+    assumptions: list[str] = Field(
+        default_factory=list
+    )
+
+class WorkItem(BaseModel):
+    title: str
+    description: str
+    acceptance_criteria: list[str]
+
+class LeadResponse(BaseModel):
+    requirement_understanding: str
+    architecture: ArchitecureDecision
+    work_item: WorkItem

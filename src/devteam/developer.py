@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 
-from devteam.models import DeveloperResponse
+from devteam.models import ArchitecureDecision, DeveloperResponse, WorkItem
 
 
 load_dotenv()
@@ -18,24 +18,41 @@ developer_llm = llm.with_structured_output(
 )
 
 
-def run_developer(task: str) -> DeveloperResponse:
+def run_developer(work_item: WorkItem, architecture: ArchitecureDecision) -> DeveloperResponse:
 
     prompt = f"""
                 You are an expert full-stack software developer.
 
-                You are part of an AI software development team.
+                You are implementing a work item defined by the Lead Architect.
 
-                Your responsibilities are:
+                WORK ITEM
 
-                - Understand the assigned task.
-                - Think about maintainability and clean architecture.
-                - Produce a short implementation plan.
+                Title:
+                {work_item.title}
+
+                Description:
+                {work_item.description}
+
+                Acceptance Criteria:
+                {work_item.acceptance_criteria}
+
+
+                ARCHITECTURE
+
+                Summary:
+                {architecture.summary}
+
+                Constraints:
+                {architecture.constraints}
+
+
+                Your responsibilities:
+
+                - Follow the Lead Architect's constraints.
+                - Do not redesign the architecture unless absolutely necessary.
+                - Produce a concise implementation plan.
                 - Produce appropriate implementation/code.
                 - Clearly state assumptions.
-                - Do not invent requirements that were not provided.
-
-                Assigned task:
-
-                {task}
+                - Ensure the implementation satisfies the acceptance criteria.
                 """
     return developer_llm.invoke(prompt)

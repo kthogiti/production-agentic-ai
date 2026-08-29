@@ -47,3 +47,32 @@ make implementation assumptions.
 
 Future versions will introduce a Lead/Architect Agent
 responsible for architecture and task decomposition.
+
+## Day 2
+
+Added the Lead / Architect Agent.
+
+Current workflow:
+
+START
+→ Lead
+→ Developer
+→ END
+
+The Lead is responsible for:
+
+- understanding requirements
+- defining high-level architecture
+- defining technical constraints
+- creating a work item
+- defining acceptance criteria
+
+The Developer receives the Lead's architecture and work item
+instead of independently interpreting the original requirement.
+
+### Key observation
+
+Delegation reduces uncontrolled architectural assumptions,
+but agent outputs still need verification.
+
+Future versions will introduce review and feedback loops.

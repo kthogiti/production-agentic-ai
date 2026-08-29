@@ -1,8 +1,9 @@
 from typing import TypedDict
 
-from devteam.models import DeveloperResponse
+from devteam.models import DeveloperResponse, LeadResponse
 
 
 class DevelopmentState(TypedDict, total=False):
-    task: str
+    requirement: str
+    lead_response: LeadResponse
     developer_response: DeveloperResponse
