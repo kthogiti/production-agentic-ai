@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 
-from devteam.models import DeveloperResponse, LeadResponse, ReviewResponse
+from devteam.models import DeveloperResponse, LeadResponse, ReviewResponse, WorkItem
 
 
 load_dotenv()
@@ -20,6 +20,20 @@ lead_llm = llm.with_structured_output(
 
 def run_lead(requirement: str) -> LeadResponse:
 
+    createWorkItemsPrompt = """
+        Break the requirement into the smallest reasonable ordered
+        set of implementation work items.
+
+        Each work item should:
+
+        - have a unique ID
+        - represent one coherent implementation responsibility
+        - have measurable acceptance criteria
+        - respect dependencies between work items
+        - avoid unnecessary fragmentation
+        - be implementable by one developer
+    """
+
     prompt = f"""
                 You are the Lead Software Architect of an AI software
                 development team.
@@ -30,10 +44,11 @@ def run_lead(requirement: str) -> LeadResponse:
                 - Define an appropriate high-level architecture.
                 - Avoid unnecessary complexity.
                 - Define technical constraints for developers.
-                - Create one clear implementation work item.
+                - {createWorkItemsPrompt}
                 - Define measurable acceptance criteria.
                 - Do not write the full implementation.
                 - Do not invent business requirements.
+                - Return work items in implementation order.
 
                 Software requirement:
 
@@ -47,6 +62,7 @@ review_llm = llm.with_structured_output(
 
 
 def review_implementation(lead_response: LeadResponse,
+    work_item: WorkItem,
     developer_response: DeveloperResponse
     ) -> ReviewResponse:
 
@@ -68,7 +84,7 @@ def review_implementation(lead_response: LeadResponse,
 
                 WORK ITEM
 
-                {lead_response.work_item}
+                {work_item}
 
                 DEVELOPER RESPONSE
 

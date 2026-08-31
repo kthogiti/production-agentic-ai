@@ -37,6 +37,7 @@ def run_developer(work_item: WorkItem,
                 You are an expert full-stack software developer.
 
                 You are implementing a work item defined by the Lead Architect.
+                
 
                 WORK ITEM
 

@@ -48,6 +48,9 @@ class ReviewResponse(BaseModel):
     )
 
 class WorkItem(BaseModel):
+    id: str = Field(
+        description="Unique work item identifier such as WI-001."
+    )
     title: str
     description: str
     acceptance_criteria: list[str]
@@ -55,4 +58,6 @@ class WorkItem(BaseModel):
 class LeadResponse(BaseModel):
     requirement_understanding: str
     architecture: ArchitecureDecision
-    work_item: WorkItem
+    work_items: list[WorkItem] = Field(
+        description="Ordered implementation work items required to deliver the requirement."
+    )
