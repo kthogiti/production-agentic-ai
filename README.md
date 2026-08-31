@@ -76,3 +76,38 @@ Delegation reduces uncontrolled architectural assumptions,
 but agent outputs still need verification.
 
 Future versions will introduce review and feedback loops.
+
+## Day 3
+
+Added an implementation review loop.
+
+Current workflow:
+
+START
+→ Lead
+→ Developer
+→ Lead Review
+
+If approved:
+→ END
+
+If changes are required:
+→ Developer
+→ Lead Review
+→ END
+
+The Lead now verifies:
+
+- architecture compliance
+- technical constraints
+- acceptance criteria
+- unnecessary design changes
+- invented requirements
+
+A maximum review-attempt count prevents uncontrolled loops.
+
+### Key learning
+
+Agent instructions are not guarantees.
+
+Important outputs should be independently verified.

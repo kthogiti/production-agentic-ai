@@ -18,7 +18,20 @@ developer_llm = llm.with_structured_output(
 )
 
 
-def run_developer(work_item: WorkItem, architecture: ArchitecureDecision) -> DeveloperResponse:
+def run_developer(work_item: WorkItem, 
+                  architecture: ArchitecureDecision, 
+                  feedback: list[str] | None = None) -> DeveloperResponse:
+
+    feedback_section = ""
+
+    if feedback:
+        feedback_section = f"""
+        REVIEW FEEDBACK
+
+        {feedback}
+
+        You must address this feedback in the revised implementation.
+        """
 
     prompt = f"""
                 You are an expert full-stack software developer.
@@ -45,6 +58,7 @@ def run_developer(work_item: WorkItem, architecture: ArchitecureDecision) -> Dev
                 Constraints:
                 {architecture.constraints}
 
+                {feedback_section}
 
                 Your responsibilities:
 
