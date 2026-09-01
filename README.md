@@ -111,3 +111,85 @@ A maximum review-attempt count prevents uncontrolled loops.
 Agent instructions are not guarantees.
 
 Important outputs should be independently verified.
+
+## Day 4
+
+The Lead Agent can now decompose a software requirement
+into multiple ordered implementation work items.
+
+The workflow executes each work item independently.
+
+Current flow:
+
+START
+→ Lead
+→ Select Work Item
+→ Developer
+→ Review
+
+If revision is required:
+→ Developer
+→ Review
+
+If approved:
+→ Complete Work Item
+
+If more work exists:
+→ Select Next Work Item
+
+Otherwise:
+→ END
+
+### Key learning
+
+Not every LangGraph node should contain an LLM.
+
+Deterministic workflow operations such as selecting the next
+work item and advancing an index should remain normal code.
+
+The AI Lead is responsible for reasoning and decomposition.
+LangGraph is responsible for workflow orchestration.
+
+## Day 5
+
+Introduced the first Developer Pool.
+
+The team currently contains:
+
+- Lead / Architect Agent
+- Developer 1
+- Developer 2
+
+Work items are assigned using deterministic
+round-robin assignment.
+
+Current workflow:
+
+START
+→ Lead
+→ Select Work Item
+→ Assign Developer
+→ Developer
+→ Review
+
+If changes are required:
+→ Same Developer
+→ Review
+
+If approved:
+→ Complete Work Item
+→ Next Work Item
+
+### Key learning
+
+Agent selection does not always require an LLM.
+
+Because both Developers currently have similar capabilities,
+assignment can remain deterministic.
+
+A new limitation is now visible:
+
+Developers do not yet work against a shared evolving codebase.
+
+Repository access will be required before the team can
+behave like real developers.
