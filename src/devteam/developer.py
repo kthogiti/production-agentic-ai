@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 
 from devteam.models import ArchitecureDecision, DeveloperResponse, WorkItem
+from devteam.models.developer_profile import DeveloperProfile
 
 
 load_dotenv()
@@ -19,7 +20,8 @@ developer_llm = llm.with_structured_output(
 
 
 def run_developer(work_item: WorkItem, 
-                  architecture: ArchitecureDecision, 
+                  architecture: ArchitecureDecision,
+                  developer: DeveloperProfile, 
                   feedback: list[str] | None = None) -> DeveloperResponse:
 
     feedback_section = ""
@@ -34,12 +36,19 @@ def run_developer(work_item: WorkItem,
         """
 
     prompt = f"""
-                You are an expert full-stack software developer.
+                You are {developer.name}.
 
-                You are implementing a work item defined by the Lead Architect.
-                
+                You are an expert full-stack software developer
+                working as part of an AI software development team.
+
+                Your skills include:
+
+                {developer.skills}
 
                 WORK ITEM
+
+                ID:
+                {work_item.id}
 
                 Title:
                 {work_item.title}
@@ -49,7 +58,6 @@ def run_developer(work_item: WorkItem,
 
                 Acceptance Criteria:
                 {work_item.acceptance_criteria}
-
 
                 ARCHITECTURE
 
@@ -63,11 +71,12 @@ def run_developer(work_item: WorkItem,
 
                 Your responsibilities:
 
-                - Follow the Lead Architect's constraints.
-                - Do not redesign the architecture unless absolutely necessary.
-                - Produce a concise implementation plan.
-                - Produce appropriate implementation/code.
+                - Implement only the assigned work item.
+                - Follow the Lead's architecture.
+                - Respect all constraints.
+                - Satisfy acceptance criteria.
+                - Address review feedback if supplied.
+                - Avoid unrelated changes.
                 - Clearly state assumptions.
-                - Ensure the implementation satisfies the acceptance criteria.
                 """
     return developer_llm.invoke(prompt)

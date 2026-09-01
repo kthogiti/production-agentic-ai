@@ -8,3 +8,7 @@ class WorkItem(BaseModel):
     title: str
     description: str
     acceptance_criteria: list[str]
+    assigned_developer_id: str | None = Field(
+        default=None,
+        description="Developer assigned to this work item."
+    )
